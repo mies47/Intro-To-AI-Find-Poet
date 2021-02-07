@@ -26,22 +26,43 @@ def createDictionary(sentences: list):
     counter = 0
     for i in sentences:
         for j in i.split(' '):
-            if j not in ['<s>' , '</s>'] and j in dictionary:
+            if j in dictionary:
                 dictionary[j] += 1
-                counter += 1
-            elif  j not in ['<s>' , '</s>']:
+            else:
                 dictionary[j] = 1
+            if j not in ['<s>' , '</s>']:
                 counter += 1
 
     return (dictionary , counter)
 
 def findUnigram(dictionary: dict, total: int):
+    'Finds and returns the probability of each key of dictionary'
     unigram = {}
     for i in dictionary.keys():
-        unigram[i] = dictionary[i] / total
+        if i not in ['<s>' , '</s>']:
+            unigram[i] = dictionary[i] / total
     
     return unigram
+
+def findBigram(sentences: list , dictionary: dict):
+    'Finds and returns the probability of any two consecutive words'
+    bigramWords = {}
+    bigram = {}
+    for i in sentences:
+        sentenceWords = i.split(' ')
+        for j in range(len(sentenceWords) - 1):
+            twoWords = sentenceWords[j] + ' ' + sentenceWords[j+1]
+            if twoWords in bigramWords:
+                bigramWords[twoWords] += 1
+            else:
+                bigramWords[twoWords] = 1
+
+    for i in bigramWords:
+        lastWord = i.split(' ')[1]
+        bigram[i] = bigramWords[i] / dictionary[lastWord]
+
+    return bigram
             
-def findBigram(dictionary: dict)
+# def findBigram(dictionary: dict)
 dictionary , total = createDictionary(removeSigns(readFromFile('./train_set/molavi_train.txt')))
 print(findUnigram(dictionary , total))
