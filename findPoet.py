@@ -1,5 +1,5 @@
-landa = [0.002, 0.318, 0.68]
-epsilon = 0.0001
+landa = [0.01, 0.09, 0.9]
+epsilon = 0.001
 def readFromFile(path: str):
     'Reads all lines of specified file'
     fo = open(path , 'r' , encoding='utf-8')
@@ -72,8 +72,8 @@ def backOffModel(twoWords: str , bigram: dict, unigram: dict):
     unigramValue = 0
     if twoWords in bigram:
         bigramValue = bigram[twoWords]
-    if twoWords.split(' ')[0] in unigram:
-        unigramValue = unigram[twoWords.split(' ')[0]]
+    if twoWords.split(' ')[1] in unigram:
+        unigramValue = unigram[twoWords.split(' ')[1]]
     return ((landa[2] * bigramValue) + (landa[1] * unigramValue) + (landa[0] * epsilon))
 
 def readTestFile():
@@ -148,11 +148,11 @@ def findAccuracy():
             countedHafez += 1
         elif maximum == molavi and testSentences[i] == 3:
             countedMolavi += 1
-        if maximum == ferdowsi:
+        if testSentences[i] == 1:
             totalFerdowsi += 1
-        if maximum == hafez:
+        if testSentences[i] == 2:
             totalHafez += 1
-        if maximum == molavi:
+        if testSentences[i] == 3:
             totalMolavi += 1
 
     print("Ferdowsi Accuracy is: " , countedFerdowsi / totalFerdowsi * 100)
